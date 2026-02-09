@@ -13,7 +13,6 @@ fun RootNavigationGraph() {
         RootScreen.Login -> {
             LoginScreen(
                 onLoginSuccess = {
-                    // Al loguearse, cambiamos la variable a Main
                     currentScreen = RootScreen.Main
                 },
                 onNavigateRegister = {

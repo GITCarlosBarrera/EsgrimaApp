@@ -1,16 +1,51 @@
 package org.example.project.ui.auth
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import esgrimaapp.composeapp.generated.resources.Res
+import esgrimaapp.composeapp.generated.resources.esgrima_app_logo
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun LoginScreen(
@@ -18,21 +53,178 @@ fun LoginScreen(
     onNavigateRegister: () -> Unit
 ) {
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
     ) {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(32.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Button(onClick = onLoginSuccess) {
-                Text(text = "Login")
-            }
-            Button(onClick = onNavigateRegister) {
-                Text(text = "register")
+            item {
+                Image(
+                    painter = painterResource(Res.drawable.esgrima_app_logo),
+                    contentDescription = "App logo",
+                    modifier = Modifier.size(80.dp)
+                )
+                Text(
+                    text = "Esgrima App",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 32.sp
+                )
+                Text(
+                    text = "Gestión de competiciones de esgrima",
+                    fontSize = 18.sp,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.padding(8.dp))
+                LoginCard(
+                    onLoginSuccess = onLoginSuccess,
+                    onNavigateRegister = onNavigateRegister
+                )
+                Spacer(modifier = Modifier.padding(8.dp))
+                Text(
+                    text = "© 2026 Esgrima App. Gestión de competiciones de esgrima",
+                    fontSize = 12.sp,
+                    color = Color.Gray
+                )
             }
         }
     }
+}
+
+@Composable
+fun LoginCard(
+    onLoginSuccess: () -> Unit,
+    onNavigateRegister: () -> Unit
+) {
+    var email by remember { mutableStateOf("") }
+    var passwd by remember { mutableStateOf("") }
+
+    ElevatedCard(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(
+                    text = "Iniciar sesión",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+                Text(
+                    text = "Usuario",
+                    fontWeight = FontWeight.Bold
+                )
+                CustomOutlinedTextField(
+                    text = email,
+                    onTextChange = { email = it },
+                    placeholder = "Tu usuario",
+                    icon = Icons.Outlined.AccountCircle
+                )
+                Text(
+                    text = "Contraseña",
+                    fontWeight = FontWeight.Bold
+                )
+                CustomOutlinedTextField(
+                    text = passwd,
+                    onTextChange = { passwd = it },
+                    placeholder = "Tu contraseña",
+                    icon = Icons.Outlined.Lock,
+                    isPassword = true
+                )
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { onLoginSuccess() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Text(text = "Acceder")
+                }
+
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color.LightGray
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+                ) {
+                    Text(
+                        text = "¿Primera vez?",
+                        color = Color.LightGray
+                    )
+                    Text(
+                        text = "Registrate aquí",
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.clickable { onNavigateRegister() }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CustomOutlinedTextField(
+    text: String,
+    onTextChange: (String) -> Unit,
+    placeholder: String,
+    icon: ImageVector,
+    isPassword: Boolean = false
+) {
+    var passwordVisible by remember { mutableStateOf(false) }
+
+    OutlinedTextField(
+        value = text,
+        onValueChange = onTextChange,
+        modifier = Modifier.fillMaxWidth(),
+        placeholder = { Text(text = placeholder) },
+        leadingIcon = {
+            Icon(
+                imageVector = icon,
+                contentDescription = null
+            )
+        },
+        visualTransformation = if (isPassword && !passwordVisible) PasswordVisualTransformation() else VisualTransformation.None,
+        trailingIcon = {
+            if (isPassword) {
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                        imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                        contentDescription = if (passwordVisible) "Ocultar" else "Mostrar"
+                    )
+                }
+            }
+        },
+        shape = RoundedCornerShape(16.dp),
+        colors = TextFieldDefaults.colors(
+            unfocusedIndicatorColor = Color.LightGray,
+            unfocusedContainerColor = Color.White,
+            unfocusedPlaceholderColor = Color.LightGray,
+            unfocusedLeadingIconColor = Color.Gray,
+            focusedContainerColor = Color.White,
+            unfocusedTrailingIconColor = Color.Gray
+        )
+    )
 }
