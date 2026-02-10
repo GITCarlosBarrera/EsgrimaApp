@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
@@ -41,6 +42,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import esgrimaapp.composeapp.generated.resources.Res
@@ -102,6 +104,7 @@ fun LoginCard(
 ) {
     var email by remember { mutableStateOf("") }
     var passwd by remember { mutableStateOf("") }
+    var errorLogin by remember { mutableStateOf(false) }
 
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
@@ -130,14 +133,14 @@ fun LoginCard(
                     fontSize = 18.sp
                 )
                 Text(
-                    text = "Usuario",
+                    text = "Email",
                     fontWeight = FontWeight.Bold
                 )
                 CustomOutlinedTextField(
                     text = email,
                     onTextChange = { email = it },
-                    placeholder = "Tu usuario",
-                    icon = Icons.Outlined.AccountCircle
+                    placeholder = "Tu email",
+                    icon = Icons.Outlined.Mail
                 )
                 Text(
                     text = "Contraseña",
@@ -150,9 +153,25 @@ fun LoginCard(
                     icon = Icons.Outlined.Lock,
                     isPassword = true
                 )
+
+                if (errorLogin) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "Error al iniciar sesión",
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { onLoginSuccess() },
+                    onClick = {
+                        if (email.isNotBlank() && passwd.isNotBlank()) {
+                            onLoginSuccess()
+                        } else {
+                            errorLogin = true
+                        }
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     ),
