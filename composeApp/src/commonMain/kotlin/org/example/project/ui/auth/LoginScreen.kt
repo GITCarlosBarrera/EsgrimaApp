@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material3.Button
@@ -21,13 +19,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,16 +30,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import esgrimaapp.composeapp.generated.resources.Res
 import esgrimaapp.composeapp.generated.resources.esgrima_app_logo
 import org.example.project.UserRole
+import org.example.project.components.CustomOutlinedTextField
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -103,7 +95,9 @@ fun LoginCard(
     var errorLogin by remember { mutableStateOf(false) }
 
     ElevatedCard(
-        modifier = Modifier.fillMaxWidth().widthIn(max = 450.dp),
+        modifier = Modifier
+            .widthIn(max = 450.dp)
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
@@ -149,7 +143,6 @@ fun LoginCard(
                     icon = Icons.Outlined.Lock,
                     isPassword = true
                 )
-
                 if (errorLogin) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
@@ -157,8 +150,9 @@ fun LoginCard(
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.error
                     )
+                } else {
+                    Spacer(modifier = Modifier.padding(1.dp))
                 }
-
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
@@ -177,56 +171,7 @@ fun LoginCard(
                 ) {
                     Text(text = "Acceder")
                 }
-
-                HorizontalDivider(
-                    thickness = 1.dp,
-                    color = Color.LightGray
-                )
             }
         }
     }
-}
-
-@Composable
-fun CustomOutlinedTextField(
-    text: String,
-    onTextChange: (String) -> Unit,
-    placeholder: String,
-    icon: ImageVector,
-    isPassword: Boolean = false
-) {
-    var passwordVisible by remember { mutableStateOf(false) }
-
-    OutlinedTextField(
-        value = text,
-        onValueChange = onTextChange,
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = placeholder) },
-        leadingIcon = {
-            Icon(
-                imageVector = icon,
-                contentDescription = null
-            )
-        },
-        visualTransformation = if (isPassword && !passwordVisible) PasswordVisualTransformation() else VisualTransformation.None,
-        trailingIcon = {
-            if (isPassword) {
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(
-                        imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                        contentDescription = if (passwordVisible) "Ocultar" else "Mostrar"
-                    )
-                }
-            }
-        },
-        shape = RoundedCornerShape(16.dp),
-        colors = TextFieldDefaults.colors(
-            unfocusedIndicatorColor = Color.LightGray,
-            unfocusedContainerColor = Color.White,
-            unfocusedPlaceholderColor = Color.LightGray,
-            unfocusedLeadingIconColor = Color.Gray,
-            focusedContainerColor = Color.White,
-            unfocusedTrailingIconColor = Color.Gray
-        )
-    )
 }

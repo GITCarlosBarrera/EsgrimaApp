@@ -12,7 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import org.example.project.home.AdminHomeScreen
+import org.example.project.ui.admin.adminhome.AdminHomeScreen
 import org.example.project.home.UserHomeScreen
 import org.example.project.navigation.MainDestination
 
