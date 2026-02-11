@@ -2,64 +2,40 @@ package org.example.project
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import kotlinx.coroutines.launch
-import org.example.project.home.HomeScreen
+import org.example.project.home.AdminHomeScreen
+import org.example.project.home.UserHomeScreen
 import org.example.project.navigation.MainDestination
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainController() {
+fun MainController(role: UserRole) {
     var currentDestination by remember { mutableStateOf<MainDestination>(MainDestination.Home) }
 
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
-
-    // Pantallas
-    val menuItems = listOf(
-        MainDestination.Home to "Home",
-    )
-
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            ModalDrawerSheet {
-                Text(text = "Esgrima App", modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding))
-                HorizontalDivider()
-
-                menuItems.forEach { (destino, titulo) ->
-                    NavigationDrawerItem(
-                        label = { Text(titulo) },
-                        selected = currentDestination == destino,
-                        onClick = {
-                            currentDestination = destino
-                            scope.launch { drawerState.close() }
-                        },
-                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                    )
-                }
-            }
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("EsgrimaApp") },
+            )
         }
-    ) {
-        Scaffold(
-            topBar = {
-                CenterAlignedTopAppBar(
-                    title = { Text("EsgrimaApp") },
-                    navigationIcon = {
-                        IconButton(onClick = { scope.launch { drawerState.open() } }) {
-                            Icon(Icons.Filled.Menu, contentDescription = "Menu")
-                        }
+    ) { paddingValues ->
+        Box(modifier = Modifier.padding(paddingValues)) {
+            when (currentDestination) {
+                MainDestination.Home -> {
+                    if (role == UserRole.ADMIN) {
+                        AdminHomeScreen(onNavigate = { currentDestination = it })
+                    } else {
+                        UserHomeScreen(onNavigate = { currentDestination = it })
                     }
-                )
-            }
-        ) { paddingValues ->
-            Box(modifier = Modifier.padding(paddingValues)) {
-                when (currentDestination) {
-                    is MainDestination.Home -> HomeScreen()
                 }
             }
         }

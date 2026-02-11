@@ -1,21 +1,19 @@
 package org.example.project.ui.auth
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material3.Button
@@ -47,12 +45,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import esgrimaapp.composeapp.generated.resources.Res
 import esgrimaapp.composeapp.generated.resources.esgrima_app_logo
+import org.example.project.UserRole
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun LoginScreen(
-    onLoginSuccess: () -> Unit,
-    onNavigateRegister: () -> Unit
+    onLoginSuccess: (UserRole) -> Unit,
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -84,7 +82,6 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.padding(8.dp))
                 LoginCard(
                     onLoginSuccess = onLoginSuccess,
-                    onNavigateRegister = onNavigateRegister
                 )
                 Spacer(modifier = Modifier.padding(8.dp))
                 Text(
@@ -99,15 +96,14 @@ fun LoginScreen(
 
 @Composable
 fun LoginCard(
-    onLoginSuccess: () -> Unit,
-    onNavigateRegister: () -> Unit
+    onLoginSuccess: (UserRole) -> Unit,
 ) {
-    var email by remember { mutableStateOf("") }
+    var usuario by remember { mutableStateOf("") }
     var passwd by remember { mutableStateOf("") }
     var errorLogin by remember { mutableStateOf(false) }
 
     ElevatedCard(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().widthIn(max = 450.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
@@ -133,13 +129,13 @@ fun LoginCard(
                     fontSize = 18.sp
                 )
                 Text(
-                    text = "Email",
+                    text = "Usuario",
                     fontWeight = FontWeight.Bold
                 )
                 CustomOutlinedTextField(
-                    text = email,
-                    onTextChange = { email = it },
-                    placeholder = "Tu email",
+                    text = usuario,
+                    onTextChange = { usuario = it },
+                    placeholder = "Tu usuario",
                     icon = Icons.Outlined.Mail
                 )
                 Text(
@@ -166,8 +162,10 @@ fun LoginCard(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
-                        if (email.isNotBlank() && passwd.isNotBlank()) {
-                            onLoginSuccess()
+                        if (usuario == "admin" && passwd == "admin") {
+                            onLoginSuccess(UserRole.ADMIN)
+                        } else if (usuario.isNotBlank() && passwd.isNotBlank()) {
+                            onLoginSuccess(UserRole.USER)
                         } else {
                             errorLogin = true
                         }
@@ -184,21 +182,6 @@ fun LoginCard(
                     thickness = 1.dp,
                     color = Color.LightGray
                 )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
-                ) {
-                    Text(
-                        text = "¿Primera vez?",
-                        color = Color.LightGray
-                    )
-                    Text(
-                        text = "Registrate aquí",
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.clickable { onNavigateRegister() }
-                    )
-                }
             }
         }
     }

@@ -10,9 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.example.project.navigation.MainDestination
 
 @Composable
-fun HomeScreen() {
+fun AdminHomeScreen(
+    onNavigate: (MainDestination) -> Unit
+) {
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -23,7 +26,7 @@ fun HomeScreen() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Home Screen")
+            Text(text = "Admin Home Screen")
         }
     }
 }
