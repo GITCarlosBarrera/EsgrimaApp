@@ -20,7 +20,13 @@ fun RootNavigationGraph() {
             )
         }
         RootScreen.Main -> {
-            MainController(role = userRole ?: UserRole.USER)
+            MainController(
+                role = userRole ?: UserRole.USER,
+                onLogout = {
+                    userRole = null
+                    currentScreen = RootScreen.Login
+                }
+            )
         }
     }
 }

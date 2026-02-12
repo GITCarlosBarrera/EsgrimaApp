@@ -11,11 +11,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -35,10 +38,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
-import esgrimaapp.composeapp.generated.resources.Res
-import esgrimaapp.composeapp.generated.resources.esgrima_app_logo
-import org.jetbrains.compose.resources.painterResource
+
 
 @Composable
 fun CustomOutlinedTextField(
@@ -84,60 +86,6 @@ fun CustomOutlinedTextField(
     )
 }
 
-// Icon ElevatedButtonCard
-@Composable
-fun ElevatedButtonCard(
-    title: String,
-    subtitle: String,
-    icon: ImageVector,
-    iconColor: Color,
-    onClick: () -> Unit
-) {
-    ElevatedCard(
-        onClick = onClick,
-        modifier = Modifier
-            .widthIn(max = 450.dp)
-            .fillMaxWidth()
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Surface(
-                modifier = Modifier.size(60.dp),
-                color = iconColor.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    modifier = Modifier.padding(12.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-
-            Column {
-                Text(
-                    text = title,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
-                )
-                if (subtitle.isNotBlank()) {
-                    Text(
-                        text = subtitle,
-                        fontSize = 14.sp,
-                        color = Color.Gray
-                    )
-                }
-            }
-        }
-    }
-}
-
-// Image ElevatedButtonCard
 @Composable
 fun ElevatedButtonCard(
     title: String,
@@ -148,26 +96,24 @@ fun ElevatedButtonCard(
 ) {
     ElevatedCard(
         onClick = onClick,
-        modifier = Modifier
-            .widthIn(max = 450.dp)
-            .fillMaxWidth()
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        )
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 18.dp).widthIn(min = 450.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.Start)
         ) {
             Surface(
                 modifier = Modifier.size(60.dp),
-                color = iconColor.copy(alpha = 0.1f),
+                color = iconColor.copy(alpha = 0.5f),
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Image(
+                    modifier = Modifier.padding(6.dp),
                     painter = icon,
                     contentDescription = null,
-                    modifier = Modifier.padding(12.dp)
                 )
             }
 
@@ -175,16 +121,36 @@ fun ElevatedButtonCard(
                 Text(
                     text = title,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
+                    fontSize = 24.sp
                 )
                 if (subtitle.isNotBlank()) {
                     Text(
                         text = subtitle,
-                        fontSize = 14.sp,
+                        fontSize = 20.sp,
                         color = Color.Gray
                     )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun BackButton(
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    IconButton(
+        onClick = onBack,
+        modifier = modifier.padding(16.dp).size(56.dp),
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2F)
+        )
+    ) {
+        Icon(
+            imageVector = Icons.Default.ChevronLeft,
+            contentDescription = "Volver",
+            modifier = Modifier.size(32.dp)
+        )
     }
 }

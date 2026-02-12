@@ -11,8 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import esgrimaapp.composeapp.generated.resources.CrearComp
+import esgrimaapp.composeapp.generated.resources.CrearComp_white
+import esgrimaapp.composeapp.generated.resources.GestionarComp
+import esgrimaapp.composeapp.generated.resources.GestionarComp_white
 import esgrimaapp.composeapp.generated.resources.Res
-import esgrimaapp.composeapp.generated.resources.esgrima_app_logo
 import org.example.project.components.ElevatedButtonCard
 import org.example.project.navigation.MainDestination
 import org.jetbrains.compose.resources.painterResource
@@ -35,10 +38,18 @@ fun AdminHomeScreen(
             item {
                 ElevatedButtonCard(
                     title = "Crear Competicion",
-                    subtitle = "",
-                    icon = painterResource(Res.drawable.esgrima_app_logo),
+                    subtitle = "Empieza una nueva competición",
+                    icon = painterResource(Res.drawable.CrearComp_white),
+                    iconColor = Color.Red,
+                    onClick = { onNavigate(MainDestination.CreateCompetition) }
+                ) }
+            item {
+                ElevatedButtonCard(
+                    title = "Gestionar Competicion",
+                    subtitle = "Modifica competiciones ya existentes",
+                    icon = painterResource(Res.drawable.GestionarComp_white),
                     iconColor = Color.Blue,
-                    onClick = { onNavigate(MainDestination.Home) }
+                    onClick = { onNavigate(MainDestination.ManageCompetition) }
                 )
             }
         }

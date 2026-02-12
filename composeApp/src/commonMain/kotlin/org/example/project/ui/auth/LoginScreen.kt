@@ -35,7 +35,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import esgrimaapp.composeapp.generated.resources.Res
-import esgrimaapp.composeapp.generated.resources.esgrima_app_logo
+import esgrimaapp.composeapp.generated.resources.logo_app
+import esgrimaapp.composeapp.generated.resources.logo_app_white
 import org.example.project.UserRole
 import org.example.project.components.CustomOutlinedTextField
 import org.jetbrains.compose.resources.painterResource
@@ -57,7 +58,7 @@ fun LoginScreen(
         ) {
             item {
                 Image(
-                    painter = painterResource(Res.drawable.esgrima_app_logo),
+                    painter = painterResource(Res.drawable.logo_app),
                     contentDescription = "App logo",
                     modifier = Modifier.size(80.dp)
                 )

@@ -10,6 +10,8 @@ sealed class MainDestination {
     object Home : MainDestination()
 
     // ADMIN Screens
+    object CreateCompetition : MainDestination()
+    object ManageCompetition : MainDestination()
 
     // USER Screens
 }
