@@ -318,12 +318,12 @@ fun AddFencerDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Add New Fencer") },
+        title = { Text("Añadir Nuevo Tirador") },
         text = {
             CustomOutlinedTextField(
                 text = name,
                 onTextChange = { name = it },
-                placeholder = "Fencer Name",
+                placeholder = "Nombre Tirador",
                 icon = Icons.Default.Person
             )
         },
@@ -334,10 +334,10 @@ fun AddFencerDialog(
                         onConfirm(name, score.toIntOrNull() ?: 0)
                     }
                 }
-            ) { Text("Add") }
+            ) { Text("Añadir") }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text("Cancelar") }
         }
     )
 }
@@ -352,19 +352,19 @@ fun AddRefereeDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Add New Referee") },
+        title = { Text("Añadir Nuevo Arbitro") },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 CustomOutlinedTextField(
                     text = name,
                     onTextChange = { name = it },
-                    placeholder = "Referee Name",
+                    placeholder = "Nombre Arbitro",
                     icon = Icons.Default.Person
                 )
                 CustomOutlinedTextField(
                     text = fedNum,
                     onTextChange = { fedNum = it },
-                    placeholder = "Federation Number",
+                    placeholder = "Número Federación",
                     icon = Icons.Default.ConfirmationNumber // O Numbers
                 )
             }
@@ -374,10 +374,10 @@ fun AddRefereeDialog(
                 if (name.isNotBlank()) {
                     onConfirm(name, fedNum)
                 }
-            }) { Text("Add") }
+            }) { Text("Añadir") }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text("Cancelar") }
         }
     )
 }

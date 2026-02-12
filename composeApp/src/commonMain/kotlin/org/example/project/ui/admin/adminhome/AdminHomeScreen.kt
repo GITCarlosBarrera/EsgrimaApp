@@ -1,9 +1,13 @@
 package org.example.project.ui.admin.adminhome
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -14,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import esgrimaapp.composeapp.generated.resources.CrearComp_white
 import esgrimaapp.composeapp.generated.resources.GestionarComp_white
 import esgrimaapp.composeapp.generated.resources.Res
+import esgrimaapp.composeapp.generated.resources.logo_app_white
 import org.example.project.component.ElevatedButtonCard
 import org.example.project.navigation.MainDestination
 import org.jetbrains.compose.resources.painterResource
@@ -33,6 +38,19 @@ fun AdminHomeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            item {
+                Surface(
+                    modifier = Modifier.size(180.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7F),
+                    shape = CircleShape
+                ) {
+                    Image(
+                        painterResource(Res.drawable.logo_app_white),
+                        contentDescription = null,
+                        modifier = Modifier.padding(32.dp)
+                    )
+                }
+            }
             item {
                 ElevatedButtonCard(
                     title = "Crear Competicion",

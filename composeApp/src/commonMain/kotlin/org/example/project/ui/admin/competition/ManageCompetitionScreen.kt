@@ -1,5 +1,6 @@
 package org.example.project.ui.admin.competition
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,7 +21,8 @@ import org.example.project.model.CompetitionStore
 
 @Composable
 fun ManageCompetitionScreen(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onNavigateToEdit: (Competition) -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -64,7 +66,8 @@ fun ManageCompetitionScreen(
                         items(competitionList) { competition ->
                             CompetitionCard(
                                 competition = competition,
-                                onDelete = { CompetitionStore.competitions.remove(competition) }
+                                onDelete = { CompetitionStore.competitions.remove(competition) },
+                                onClick = { onNavigateToEdit(competition) }
                             )
                         }
                     }
@@ -77,10 +80,13 @@ fun ManageCompetitionScreen(
 @Composable
 fun CompetitionCard(
     competition: Competition,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    onClick: () -> Unit
 ) {
     ElevatedCard(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable( onClick = onClick ),
         shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)

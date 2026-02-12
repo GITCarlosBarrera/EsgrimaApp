@@ -9,4 +9,12 @@ object CompetitionStore {
     fun addCompetition(competition: Competition) {
         competitions.add(competition)
     }
+
+    fun isRefereeRegistered(name: String): Boolean {
+        return competitions.any { competition ->
+            competition.referees.any { referee ->
+                referee.name.equals(name, ignoreCase = true)
+            }
+        }
+    }
 }

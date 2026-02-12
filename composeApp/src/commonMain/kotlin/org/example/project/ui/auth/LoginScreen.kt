@@ -37,11 +37,12 @@ import esgrimaapp.composeapp.generated.resources.Res
 import esgrimaapp.composeapp.generated.resources.logo_app
 import org.example.project.UserRole
 import org.example.project.component.CustomOutlinedTextField
+import org.example.project.model.CompetitionStore
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun LoginScreen(
-    onLoginSuccess: (UserRole) -> Unit,
+    onLoginSuccess: (UserRole, String) -> Unit,
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -87,9 +88,9 @@ fun LoginScreen(
 
 @Composable
 fun LoginCard(
-    onLoginSuccess: (UserRole) -> Unit,
+    onLoginSuccess: (UserRole, String) -> Unit,
 ) {
-    var usuario by remember { mutableStateOf("") }
+    var user by remember { mutableStateOf("") }
     var passwd by remember { mutableStateOf("") }
     var errorLogin by remember { mutableStateOf(false) }
 
@@ -126,8 +127,8 @@ fun LoginCard(
                     fontWeight = FontWeight.Bold
                 )
                 CustomOutlinedTextField(
-                    text = usuario,
-                    onTextChange = { usuario = it },
+                    text = user,
+                    onTextChange = { user = it },
                     placeholder = "Tu usuario",
                     icon = Icons.Outlined.Mail
                 )
@@ -155,10 +156,11 @@ fun LoginCard(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
-                        if (usuario.trim() == "admin" && passwd.trim() == "admin") {
-                            onLoginSuccess(UserRole.ADMIN)
-                        } else if (usuario.isNotBlank() && passwd.isNotBlank()) {
-                            onLoginSuccess(UserRole.USER)
+                        if (user.trim() == "admin" && passwd.trim() == "admin") {
+                            onLoginSuccess(UserRole.ADMIN, "")
+                        } else if (user == passwd && CompetitionStore.isRefereeRegistered(user)) {
+                            onLoginSuccess(UserRole.USER, user.trim())
+
                         } else {
                             errorLogin = true
                         }

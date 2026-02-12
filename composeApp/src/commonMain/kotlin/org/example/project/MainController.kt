@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -16,9 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -39,12 +36,16 @@ import org.example.project.navigation.MainDestination
 import org.example.project.ui.admin.adminhome.AdminHomeScreen
 import org.example.project.ui.admin.competition.CreateCompetitionScreen
 import org.example.project.ui.admin.competition.ManageCompetitionScreen
+import org.example.project.ui.admin.competition.ManageFencersRefereesPistesScreen
+import org.example.project.ui.user.assault.ManageAssaultScreen
+import org.example.project.ui.user.poule.ManagePoulesScreen
 import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainController(
     role: UserRole,
+    username: String,
     onLogout: () -> Unit
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -103,19 +104,23 @@ fun MainController(
     ) { paddingValues ->
         Box(
             modifier = Modifier.padding(paddingValues)) {
-            when (currentDestination) {
+            when (val destination = currentDestination) {
                 // RUTA: Homes
                 MainDestination.Home -> {
                     if (role == UserRole.ADMIN) {
                         AdminHomeScreen(onNavigate = { currentDestination = it })
                     } else {
-                        UserHomeScreen(onNavigate = { currentDestination = it })
+                        UserHomeScreen(
+                            onNavigate = { currentDestination = it },
+                            userName = username!!
+                        )
                     }
                 }
 
+                // Pantallas Admins
+
                 // RUTA: Crear Competición
                 MainDestination.CreateCompetition -> {
-                    // Aquí llamas a tu pantalla (tienes que crearla)
                     CreateCompetitionScreen(
                         onBack = { currentDestination = MainDestination.Home }
                     )
@@ -124,7 +129,36 @@ fun MainController(
                 // RUTA: Gestionar Competición
                 MainDestination.ManageCompetition -> {
                     ManageCompetitionScreen(
-                        onBack = { currentDestination = MainDestination.Home }
+                        onBack = { currentDestination = MainDestination.Home },
+                        onNavigateToEdit = { selectedComp ->
+                            currentDestination = MainDestination.ManageFencersRefereesPistes(selectedComp)
+                        }
+                    )
+                }
+
+                // RUTA: Gestionar datos competicion
+                is MainDestination.ManageFencersRefereesPistes -> {
+                    ManageFencersRefereesPistesScreen(
+                        competition = destination.competition,
+                        onBack = { currentDestination = MainDestination.ManageCompetition }
+                    )
+                }
+
+                // Pantallas Arbitros
+
+                // RUTA: Gestionar Poules
+                is MainDestination.ManagePoules -> {
+                    ManagePoulesScreen(
+                        onBack = { currentDestination = MainDestination.Home },
+                        refereeName = username
+                    )
+                }
+
+                // RUTA: Gestionar Asaltos
+                is MainDestination.ManageAssaults -> {
+                    ManageAssaultScreen(
+                        onBack = { currentDestination = MainDestination.Home },
+                        refereeName = username
                     )
                 }
             }
