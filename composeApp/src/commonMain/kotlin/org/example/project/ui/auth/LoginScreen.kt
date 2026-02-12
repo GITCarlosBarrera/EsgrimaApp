@@ -18,7 +18,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -36,9 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import esgrimaapp.composeapp.generated.resources.Res
 import esgrimaapp.composeapp.generated.resources.logo_app
-import esgrimaapp.composeapp.generated.resources.logo_app_white
 import org.example.project.UserRole
-import org.example.project.components.CustomOutlinedTextField
+import org.example.project.component.CustomOutlinedTextField
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -157,7 +155,7 @@ fun LoginCard(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
-                        if (usuario == "admin" && passwd == "admin") {
+                        if (usuario.trim() == "admin" && passwd.trim() == "admin") {
                             onLoginSuccess(UserRole.ADMIN)
                         } else if (usuario.isNotBlank() && passwd.isNotBlank()) {
                             onLoginSuccess(UserRole.USER)

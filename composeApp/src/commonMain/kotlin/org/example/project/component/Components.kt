@@ -1,10 +1,9 @@
-package org.example.project.components
+package org.example.project.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -38,7 +37,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 
 
@@ -48,14 +46,15 @@ fun CustomOutlinedTextField(
     onTextChange: (String) -> Unit,
     placeholder: String,
     icon: ImageVector,
-    isPassword: Boolean = false
+    isPassword: Boolean = false,
+    modifier: Modifier = Modifier.fillMaxWidth()
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
 
     OutlinedTextField(
         value = text,
         onValueChange = onTextChange,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         placeholder = { Text(text = placeholder) },
         leadingIcon = {
             Icon(

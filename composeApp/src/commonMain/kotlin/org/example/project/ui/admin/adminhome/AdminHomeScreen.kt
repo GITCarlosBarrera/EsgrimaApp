@@ -11,12 +11,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import esgrimaapp.composeapp.generated.resources.CrearComp
 import esgrimaapp.composeapp.generated.resources.CrearComp_white
-import esgrimaapp.composeapp.generated.resources.GestionarComp
 import esgrimaapp.composeapp.generated.resources.GestionarComp_white
 import esgrimaapp.composeapp.generated.resources.Res
-import org.example.project.components.ElevatedButtonCard
+import org.example.project.component.ElevatedButtonCard
 import org.example.project.navigation.MainDestination
 import org.jetbrains.compose.resources.painterResource
 
