@@ -15,6 +15,7 @@ sealed class MainDestination {
     object CreateCompetition : MainDestination()
     object ManageCompetition : MainDestination()
     data class ManageFencersRefereesPistes(val competition: Competition) : MainDestination()
+    object Clasifications : MainDestination()
 
     // USER Screens
     data class ManagePoules(val refereeName: String) : MainDestination()

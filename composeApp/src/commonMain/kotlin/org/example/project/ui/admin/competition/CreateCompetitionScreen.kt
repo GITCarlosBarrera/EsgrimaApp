@@ -27,7 +27,7 @@ fun CreateCompetitionScreen(
 ) {
     var competitionName by remember { mutableStateOf("") }
     var competitionDate by remember { mutableStateOf("") }
-    var tracksCount by remember { mutableStateOf("1") }
+    var numPistes by remember { mutableStateOf("1") }
 
     val tempFencers = remember { mutableStateListOf<Fencer>() }
     val tempReferees = remember { mutableStateListOf<Referee>() }
@@ -37,6 +37,7 @@ fun CreateCompetitionScreen(
 
     var showErrorFencer by remember { mutableStateOf(false) }
     var showErrorReferee by remember { mutableStateOf(false) }
+    var showErrorPistes by remember { mutableStateOf(false) }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -107,8 +108,8 @@ fun CreateCompetitionScreen(
                                     color = MaterialTheme.colorScheme.primary
                                 )
                                 CustomOutlinedTextField(
-                                    text = tracksCount,
-                                    onTextChange = { if (it.all { c -> c.isDigit() }) tracksCount = it },
+                                    text = numPistes,
+                                    onTextChange = { if (it.all { c -> c.isDigit() }) numPistes = it },
                                     placeholder = "Tracks",
                                     icon = Icons.Default.Numbers
                                 )
@@ -220,7 +221,7 @@ fun CreateCompetitionScreen(
 
                     if (showErrorFencer) {
                         Text(
-                            text = "Los tiradores tienen que ser pares",
+                            text = "Tiene que haber mas de 1 tirador",
                             color = MaterialTheme.colorScheme.error
                         )
                     }
@@ -232,31 +233,43 @@ fun CreateCompetitionScreen(
                         )
                     }
 
+                    if (showErrorPistes) {
+                        Text(
+                            text = "Tiene que haber un minimo de pista por arbitro",
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+
                     Button(
                         onClick = {
                             // Solo calculamos errores si hay contenido, para que no salgan en rojo al abrir la pantalla
-                            val hasFencers = tempFencers.isNotEmpty()
+                            val hasFencers = tempFencers.size > 1
                             val hasReferees = tempReferees.isNotEmpty()
-
-                            // Condición 1: Tiradores deben ser pares y la lista no estar vacía
-                            val isFencerCountValid = hasFencers && (tempFencers.size % 2 == 0)
 
                             // Condición 2: Árbitros deben ser entre 1 y la mitad de los tiradores (según tu lógica anterior)
                             // Si quieres que sea "al menos uno pero no más de la mitad":
                             val isRefereeCountValid = hasReferees && (tempReferees.size <= tempFencers.size / 2)
+                            val isPistesCountValid = (numPistes.toIntOrNull() ?: 1) >= tempReferees.size
 
                             // MOSTRAR ERRORES: Solo si el usuario ha escrito algo pero está mal
-                            showErrorFencer = hasFencers && !isFencerCountValid
+                            showErrorFencer = hasFencers
                             showErrorReferee = hasReferees && !isRefereeCountValid
+                            showErrorPistes = isPistesCountValid
 
                             // 2. Si todo es correcto (y no están vacíos), guardamos
-                            if (isFencerCountValid && isRefereeCountValid && competitionDate.isNotBlank() && competitionName.isNotBlank()) {
+                            if (hasFencers && isRefereeCountValid && isPistesCountValid && competitionDate.isNotBlank() && competitionName.isNotBlank()) {
+                                val generatedPoules = CompetitionStore.generatePoules(
+                                    tempFencers.toList(),
+                                    tempReferees.toList()
+                                )
+
                                 val newCompetition = Competition(
                                     name = competitionName,
                                     date = competitionDate,
-                                    numPistes = tracksCount.toIntOrNull() ?: 1,
+                                    numPistes = numPistes.toIntOrNull() ?: 1,
                                     fencers = tempFencers.toList(),
-                                    referees = tempReferees.toList()
+                                    referees = tempReferees.toList(),
+                                    poules = generatedPoules
                                 )
                                 CompetitionStore.addCompetition(newCompetition)
                                 onBack()

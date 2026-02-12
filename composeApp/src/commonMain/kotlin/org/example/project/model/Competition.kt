@@ -8,5 +8,6 @@ data class Competition(
     val date: String,
     val numPistes: Int,
     val fencers: List<Fencer> = emptyList(),
-    val referees: List<Referee> = emptyList()
+    val referees: List<Referee> = emptyList(),
+    val poules: List<Poule> = emptyList()
 )

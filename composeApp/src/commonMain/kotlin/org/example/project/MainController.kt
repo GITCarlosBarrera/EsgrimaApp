@@ -34,6 +34,7 @@ import esgrimaapp.composeapp.generated.resources.logo_app_white
 import org.example.project.home.UserHomeScreen
 import org.example.project.navigation.MainDestination
 import org.example.project.ui.admin.adminhome.AdminHomeScreen
+import org.example.project.ui.admin.competition.ClasificationsScreen
 import org.example.project.ui.admin.competition.CreateCompetitionScreen
 import org.example.project.ui.admin.competition.ManageCompetitionScreen
 import org.example.project.ui.admin.competition.ManageFencersRefereesPistesScreen
@@ -133,6 +134,13 @@ fun MainController(
                         onNavigateToEdit = { selectedComp ->
                             currentDestination = MainDestination.ManageFencersRefereesPistes(selectedComp)
                         }
+                    )
+                }
+
+                // RUTA: Ver Clasificaciones
+                MainDestination.Clasifications -> {
+                    ClasificationsScreen(
+                        onBack = { currentDestination = MainDestination.Home },
                     )
                 }
 

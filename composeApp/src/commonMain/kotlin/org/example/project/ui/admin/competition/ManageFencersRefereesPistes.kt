@@ -54,12 +54,14 @@ fun ManageFencersRefereesPistesScreen(
     // Importante: Llenamos las listas con los datos actuales
     val tempFencers = remember { mutableStateListOf<Fencer>().apply { addAll(competition.fencers) } }
     val tempReferees = remember { mutableStateListOf<Referee>().apply { addAll(competition.referees) } }
+    val numPistes by remember { mutableStateOf(competition.numPistes) }
 
     var showFencerDialog by remember { mutableStateOf(false) }
     var showRefereeDialog by remember { mutableStateOf(false) }
 
     var showErrorFencer by remember { mutableStateOf(false) }
     var showErrorReferee by remember { mutableStateOf(false) }
+    var showErrorPistes by remember { mutableStateOf(false) }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -191,24 +193,39 @@ fun ManageFencersRefereesPistesScreen(
                     }
 
                     // Errores
-                    if (showErrorFencer) Text("Tiradores tienen que ser pares", color = MaterialTheme.colorScheme.error)
+                    if (showErrorFencer) Text("Tiene que haber mas de 1 tirador", color = MaterialTheme.colorScheme.error)
                     if (showErrorReferee) Text("Máximo un árbitro por cada dos tiradores", color = MaterialTheme.colorScheme.error)
+                    if (showErrorPistes) {
+                        Text(
+                            text = "No hay suficientes pistas para tantos arbitros",
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
 
                     // BOTÓN GUARDAR CAMBIOS
                     Button(
                         onClick = {
-                            val isFencerCountValid = tempFencers.isNotEmpty() && (tempFencers.size % 2 == 0)
+                            val isFencerCountValid = tempFencers.size > 1
                             val isRefereeCountValid = tempReferees.isNotEmpty() && (tempReferees.size <= tempFencers.size / 2)
+                            val isPistesCountValid = numPistes >= tempReferees.size
+
 
                             showErrorFencer = !isFencerCountValid
                             showErrorReferee = !isRefereeCountValid
+                            showErrorPistes = !isPistesCountValid
 
-                            if (isFencerCountValid && isRefereeCountValid) {
+                            if (isFencerCountValid && isRefereeCountValid && isPistesCountValid) {
                                 // Actualizamos la competición en el Store
+                                val newGeneratedPoules = CompetitionStore.generatePoules(
+                                    tempFencers.toList(),
+                                    tempReferees.toList()
+                                )
+
                                 val updatedCompetition = competition.copy(
                                     numPistes = tracksCount.toIntOrNull() ?: 1,
                                     fencers = tempFencers.toList(),
-                                    referees = tempReferees.toList()
+                                    referees = tempReferees.toList(),
+                                    poules = newGeneratedPoules
                                 )
 
                                 // Buscamos el índice y reemplazamos

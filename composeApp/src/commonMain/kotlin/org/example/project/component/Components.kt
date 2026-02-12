@@ -100,7 +100,7 @@ fun ElevatedButtonCard(
         )
     ) {
         Row(
-            modifier = Modifier.padding(vertical = 16.dp, horizontal = 18.dp).widthIn(min = 450.dp),
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 18.dp).widthIn(min = 500.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.Start)
         ) {

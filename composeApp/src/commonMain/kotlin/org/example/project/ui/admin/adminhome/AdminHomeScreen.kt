@@ -68,6 +68,15 @@ fun AdminHomeScreen(
                     onClick = { onNavigate(MainDestination.ManageCompetition) }
                 )
             }
+            item {
+                ElevatedButtonCard(
+                    title = "Clasificaciones",
+                    subtitle = "Consulta los resultados de las competiciones",
+                    icon = painterResource(Res.drawable.logo_app_white),
+                    iconColor = Color.DarkGray,
+                    onClick = { onNavigate(MainDestination.Clasifications) }
+                )
+            }
         }
     }
 }
