@@ -19,6 +19,7 @@ import esgrimaapp.composeapp.generated.resources.CrearComp_white
 import esgrimaapp.composeapp.generated.resources.GestionarComp_white
 import esgrimaapp.composeapp.generated.resources.Res
 import esgrimaapp.composeapp.generated.resources.logo_app_white
+import esgrimaapp.composeapp.generated.resources.podio_white
 import org.example.project.component.ElevatedButtonCard
 import org.example.project.navigation.MainDestination
 import org.jetbrains.compose.resources.painterResource
@@ -72,7 +73,7 @@ fun AdminHomeScreen(
                 ElevatedButtonCard(
                     title = "Clasificaciones",
                     subtitle = "Consulta los resultados de las competiciones",
-                    icon = painterResource(Res.drawable.logo_app_white),
+                    icon = painterResource(Res.drawable.podio_white),
                     iconColor = Color.DarkGray,
                     onClick = { onNavigate(MainDestination.Clasifications) }
                 )

@@ -18,7 +18,9 @@ object CompetitionStore {
             Fencer(name = "Rafa Nadal"),
             Fencer(name = "Pau Gasol"),
             Fencer(name = "Carolina Marín"),
-            Fencer(name = "Ilia Topuria")
+            Fencer(name = "Ilia Topuria"),
+            Fencer(name = "David Romero"),
+            Fencer(name = "Carlos Bermudez")
         )
 
         // 2. Creamos 2 Árbitros (Usa estos nombres para hacer Login)
